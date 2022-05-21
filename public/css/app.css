@@ -45,3 +45,29 @@ section.hero {
 .menu {
   background: #f5f5f5;
 }
+
+.btn-primary {
+  background: #FE5F1E;
+  transition: smooth;
+}
+.btn-primary:hover {
+  background: #b23301;
+}
+
+section.cart {
+  background: #fffcfc;
+}
+section.cart .amount {
+  color: #FE5F1E;
+}
+
+section.login {
+  background: rgb(237, 237, 237);
+  min-height: 87vh;
+}
+section.login a {
+  color: #FE5F1E;
+}
+section.login:hover {
+  color: #b23301;
+}
