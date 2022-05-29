@@ -12,18 +12,21 @@ const expressLayout=require('express-ejs-layouts');
 
 const mongoose=require('mongoose');
 
-const session=require('express-session')
+const session=require('express-session')  
 
 const flash =require('express-flash')
 
 const MongoDbStore=require('connect-mongo')
 
+const passport =require('passport')   //authenticate using a username and password in  Node. js
 
-//require('events').EventEmitter.defaultMaxListeners = 15;
-//DATA BASE CONNECTIOn
+
+//DATA BASE CONNECTIOn old
 const url='mongodb://localhost/pizza';  //connection url
 //process.env.MONGO_CONNECTION_URL
 mongoose.connect(url);
+
+//mongoose.connect(process.env.MONGO_CONNECTION_URL, { useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true, useFindAndModify : true });
 
 const connection = mongoose.connection;
 
@@ -33,32 +36,47 @@ connection.once('open', () => {
     console.log('Connection failed...')
 });
 
+
 //session store
+/*
+let mongoStore =new MongoDbStore({
+    mongooseConnection: connection,
+    collection: 'sessions'
+})*/
 
 //session config
 // act as middleware
 //process.env.COOKIE_SECRET
 app.use(session({
-    secret: 'passwaard' ,
+    secret: 'passward' ,
     resave: false,
     store: MongoDbStore.create({
-        mongoUrl:'mongodb://localhost/pizza'
-    }),
+        mongoUrl:'mongodb://localhost/pizza'}),
     saveUninitialized: false,
     cookie: {   maxAge:1000 * 60 * 60* 24}//24 hr  maxAge:1000* 60 * 60* 24
 }))
+
+//passport config
+const passportInit=require('./app/config/passport')
+passportInit(passport);
+app.use(passport.initialize())
+app.use(passport.session())
+
 
 app.use(flash());
 
 //Assets
 app.use(express.static('public'))
+app.use(express.urlencoded({extended:false}))   // explicitly telling express to recognise incoming request object as string or arrays
 app.use(express.json())
 
 //global middleware
 app.use((req,res,next)=>{
     res.locals.session=req.session
+    res.locals.user=req.user
     next()
 })
+
 
 // set Template engine
 app.use( expressLayout);
