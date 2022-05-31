@@ -36,6 +36,7 @@ connection.once('open', () => {
     console.log('Connection failed...')
 });
 
+app.use(flash());
 
 //session store
 /*
@@ -63,7 +64,6 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 
-app.use(flash());
 
 //Assets
 app.use(express.static('public'))
