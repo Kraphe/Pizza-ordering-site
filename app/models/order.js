@@ -5,9 +5,9 @@ const Schema=mongoose.Schema
 
 const orderSchema=new Schema ({
     customerId: {
-        type:mongoose.Schema.Types.ObjectId, 
+        type:mongoose.Schema.Types.ObjectId,   //connecting order collection with user collection 
         ref: 'User', 
-        //required: true
+        required: true
     },
     items: {type:Object, required: true},
     phone:  {type:String, required: true},

@@ -1,12 +1,10 @@
-const dotenv=require('dotenv');
-
 const express=require('express');
 
 const app=express();
 
 const ejs=require('ejs');
 
-const path= require('path');   // this module genrate path  this is inbuild module no need to install
+const path= require('path');   
 
 const expressLayout=require('express-ejs-layouts');
 
@@ -18,16 +16,19 @@ const flash =require('express-flash')
 
 const MongoDbStore=require('connect-mongo')
 
-const passport =require('passport')   //authenticate using a username and password in  Node. js
+const passport =require('passport')  
+
+const Emitter=require('events')
 
 
-//DATA BASE CONNECTIOn old
-const url='mongodb://localhost/pizza';  //connection url
-//process.env.MONGO_CONNECTION_URL
-mongoose.connect(url);
-
-//mongoose.connect(process.env.MONGO_CONNECTION_URL, { useNewUrlParser: true, useCreateIndex:true, useUnifiedTopology: true, useFindAndModify : true });
-
+//DATA BASE CONNECTION
+const url='mongodb+srv://kraphe:kiUlTsGULCFDyBiC@cluster0.biez7.mongodb.net/?retryWrites=true&w=majority';
+//
+const connectionParams={
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+};
+mongoose.connect(url, connectionParams);
 const connection = mongoose.connection;
 
 connection.once('open', () => {
@@ -37,38 +38,29 @@ connection.once('open', () => {
 });
 
 app.use(flash());
+const eventEmitter=new Emitter()
+app.set('eventEmitter',eventEmitter)
 
-//session store
-/*
-let mongoStore =new MongoDbStore({
-    mongooseConnection: connection,
-    collection: 'sessions'
-})*/
-
-//session config
-// act as middleware
-//process.env.COOKIE_SECRET
+//session config  
 app.use(session({
     secret: 'passward' ,
     resave: false,
     store: MongoDbStore.create({
-        mongoUrl:'mongodb://localhost/pizza'}),
+        mongoUrl:url}),
     saveUninitialized: false,
-    cookie: {   maxAge:1000 * 60 * 60* 24}//24 hr  maxAge:1000* 60 * 60* 24
+    cookie: {   maxAge:1000 * 60 * 60* 24}
 }))
 
 //passport config
-const passportInit=require('./app/config/passport')
-passportInit(passport);
-app.use(passport.initialize())
-app.use(passport.session())
-
-
+const passportInit=require('./app/config/passport')  
+passportInit(passport);  
+app.use(passport.initialize()) 
+app.use(passport.session())    
 
 //Assets
 app.use(express.static('public'))
-app.use(express.urlencoded({extended:false}))   // explicitly telling express to recognise incoming request object as string or arrays
-app.use(express.json())
+app.use(express.urlencoded({extended:false}))   
+app.use(express.json())  
 
 //global middleware
 app.use((req,res,next)=>{
@@ -77,13 +69,13 @@ app.use((req,res,next)=>{
     next()
 })
 
-
 // set Template engine
 app.use( expressLayout);
-app.set('views',path.join(__dirname,'/resources/views'))   //this will tell express where we have kept views file 
+app.set('views',path.join(__dirname,'/resources/views')) 
 app.set('view engine','ejs');
 
-require('./routes/web')(app)   //function calling initroutes and passing instance of express
+//routes
+require('./routes/web')(app)  
 
 const PORT=process.env.PORT||4040;
 app.listen(PORT, ()=>{

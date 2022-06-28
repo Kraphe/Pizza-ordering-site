@@ -1,3 +1,4 @@
+//if user is login then he can go to order page
 function auth(req,res,next){
     if(req.isAuthenticated()){
         return next()

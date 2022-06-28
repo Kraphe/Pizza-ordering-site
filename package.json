@@ -21,12 +21,14 @@
     "express-session": "^1.17.3",
     "moment": "^2.29.3",
     "mongoose": "^6.3.4",
+    "notie": "^4.3.1",
     "passport": "^0.6.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "socket.io": "^4.5.1"
   },
   "devDependencies": {
     "laravel-mix": "^6.0.43",
-    "nodemon": "^2.0.16",
+    "nodemon": "^2.0.18",
     "resolve-url-loader": "^5.0.0",
     "sass": "^1.51.0",
     "sass-loader": "^12.1.0"

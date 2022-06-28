@@ -1,25 +1,16 @@
-// this is factory function, here factory functions return object  
 function cartController(){
     return {
         index(req,res){
             res.render('customers/cart')
         },
-        update(req,res){
-            /*letcart={
-                items:{
-                    pizzaId:{item:pizzaObject,qty:0},
-                },
-                totalQty:0,
-                totalPrice:0
-            }*/
-        //for the first time creating cart adding basic objects    
+        update(req,res){ 
             if(!req.session.cart){
+                //blueprint how our empty cart will look 
                 req.session.cart={
                     items:{},
                     totalQty:0,
                     totalPrice:0
                 }
-                
             }
             let cart =req.session.cart
              //check if items does not exist in cart
