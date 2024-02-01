@@ -25,21 +25,12 @@ require('dotenv').config();
 //DATA BASE CONNECTION
 const url=process.env.MONGO_URL
 
-//'mongodb+srv://ephar:CspAPHhPsFn17UUZ@cluster0.4j7er2t.mongodb.net/?retryWrites=true&w=majority';
-//'mongodb://localhost/pizzaa';//
 const connectionParams={
     useNewUrlParser:true,
     useUnifiedTopology:true,
 };
 mongoose.connect(url, connectionParams);
-/*
-mongoose.set("strictQuery", false); 
-mongoose.connect(url)
-.then(()=>{
-    console.log('Database connected');
-}).catch((err)=>{
-    console.log(err)
-}) */
+
 const connection = mongoose.connection;
 
 connection.once('open', () => {
