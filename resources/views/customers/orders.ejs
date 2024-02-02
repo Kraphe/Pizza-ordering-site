@@ -14,10 +14,11 @@
         <table class="w-full table-auto bg-white">
             <thead>
                 <tr>
-                    <th class="px-4 py-2 text-left">Orders</th>
+                    <th class="px-4 py-2 text-left">OrderID</th>
                     <th class="px-4 py-2 text-left">Phone</th>
                     <th class="px-4 py-2 text-left">Address</th>
                     <th class="px-4 py-2 text-left">Time</th>
+                    <th class="px-4 py-2 text-left">Bill</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,7 +26,7 @@
                     <% orders.forEach((order)=>{ %>
                         <tr>
                             <td class="border px-4 py-2">
-                                <a class="link" href="/customer/orders/<%=order._id%>"><%=order._id %></a>
+                                <%=order._id %>
                             </td>
                             <td class="border px-4 py-2">
                                 <%=order.phone %>
@@ -36,6 +37,9 @@
                             <td class="border px-4 py-2">
                                 <%=moment(order.createdAt).format('MMMM Do YYYY, h:mm:ss a') %>
                             </td>
+                            <td class="border px-4 py-2">
+                                <%= calculateTotalBill(order.items) %>
+                            </td>
                         </tr>
                     <% }) %>
                 <% }else {%>    
@@ -44,6 +48,24 @@
                 </tr>
                 <% } %>
             </tbody>
+            <% function calculateTotalBill(itemsObject) {
+                let totalBill = 0;
+            
+                // Iterate over the properties of the itemsObject
+                
+                for (const itemId in itemsObject) {
+                    if (itemsObject.hasOwnProperty(itemId)) {
+                        const itemDetails = itemsObject[itemId];
+                        
+                        // Ensure that the itemDetails object has the necessary properties
+                        if (itemDetails.items && itemDetails.qty) {
+                            const item = itemDetails.items;
+                            totalBill += item.price * itemDetails.qty;
+                        }
+                    }
+                }
+                return totalBill;
+            } %>
         </table>
     </div>
 </section>

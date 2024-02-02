@@ -44,7 +44,7 @@ app.use(flash());
 const eventEmitter=new Emitter()
 app.set('eventEmitter',eventEmitter)
 
-//session config  
+//session config, sessions collection will be created in databae after 
 app.use(session({
     secret: 'passward' ,
     resave: true,
