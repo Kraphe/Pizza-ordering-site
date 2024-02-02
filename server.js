@@ -20,27 +20,16 @@ const passport =require('passport')
 
 const Emitter=require('events')
 
-<<<<<<< HEAD
 require('dotenv').config();
 
 //DATA BASE CONNECTION
 const url=process.env.MONGO_URL
 
-=======
-
-//DATA BASE CONNECTION
-const url='mongodb+srv://kraphe:kiUlTsGULCFDyBiC@cluster0.biez7.mongodb.net/?retryWrites=true&w=majority';
-//
->>>>>>> 32e9d05afadfff919e1d2703157a172973313ac6
 const connectionParams={
     useNewUrlParser:true,
     useUnifiedTopology:true,
 };
 mongoose.connect(url, connectionParams);
-<<<<<<< HEAD
-
-=======
->>>>>>> 32e9d05afadfff919e1d2703157a172973313ac6
 const connection = mongoose.connection;
 
 connection.once('open', () => {
@@ -49,11 +38,8 @@ connection.once('open', () => {
     console.log('Connection failed...')
 });
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 32e9d05afadfff919e1d2703157a172973313ac6
 app.use(flash());
 const eventEmitter=new Emitter()
 app.set('eventEmitter',eventEmitter)
@@ -61,17 +47,10 @@ app.set('eventEmitter',eventEmitter)
 //session config  
 app.use(session({
     secret: 'passward' ,
-<<<<<<< HEAD
     resave: true,
     store: MongoDbStore.create({
         mongoUrl:url}),
     saveUninitialized: true,
-=======
-    resave: false,
-    store: MongoDbStore.create({
-        mongoUrl:url}),
-    saveUninitialized: false,
->>>>>>> 32e9d05afadfff919e1d2703157a172973313ac6
     cookie: {   maxAge:1000 * 60 * 60* 24}
 }))
 
@@ -101,11 +80,7 @@ app.set('view engine','ejs');
 //routes
 require('./routes/web')(app)  
 
-<<<<<<< HEAD
 const PORT=4040;
-=======
-const PORT=process.env.PORT||4040;
->>>>>>> 32e9d05afadfff919e1d2703157a172973313ac6
 app.listen(PORT, ()=>{
     console.log(`Listening on port ${PORT}`);
 })
